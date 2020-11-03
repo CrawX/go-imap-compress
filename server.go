@@ -19,7 +19,8 @@ func (h *Handler) Handle(conn server.Conn) error {
 }
 
 func (h *Handler) Upgrade(conn server.Conn) error {
-	err := conn.Upgrade(func(conn net.Conn) (net.Conn, error) {
+	err := conn.Upgrade(func(conn net.Conn, waitReady func()) (net.Conn, error) {
+		waitReady()
 		return createDeflateConn(conn, flate.DefaultCompression)
 	})
 	if err != nil {
